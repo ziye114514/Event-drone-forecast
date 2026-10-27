@@ -1,4 +1,0 @@
-# Install a CUDA-compatible torch/torchvision build first. SDK is separate.
-ultralytics==8.4.110
-onnxruntime-gpu==1.30.0
-onnx==1.23.1
