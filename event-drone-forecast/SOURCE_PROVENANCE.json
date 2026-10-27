@@ -1,0 +1,455 @@
+{
+  "version": "0.4.0-alpha.1",
+  "scope": "Curated current source; no downloaded author repository",
+  "license_text_source": "GNU AGPLv3 full text from installed ultralytics8.4.110 distribution licenses/LICENSE",
+  "license_text_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+  "original_own_code_notice": "LICENSES/MIT-original.txt",
+  "integrated_license": "AGPL-3.0-only",
+  "third_party_code": "FilterPy MIT snapshots only",
+  "files": [
+    {
+      "destination": "fast_raw_reader.py",
+      "original": "fast_raw_reader.py",
+      "original_sha256": "4b2bf2f8391e60bb92d4fe98f8202bfbb55d7010922cd4d8d3779401f346691c",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "forecast_runtime.py",
+      "original": "forecast_runtime.py",
+      "original_sha256": "1cde0bc9366e357d180c39659dbb401e195af4498f15625ae9d6add93876da30",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "fast_structure_front.py",
+      "original": "fast_structure_front.py",
+      "original_sha256": "e3dadd81d400b3ae8cbbb56502537c889a868c05661f202021c0d1f68c572aa9",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "continuous_five_circle.py",
+      "original": "continuous_five_circle.py",
+      "original_sha256": "64995b5832dea7fe11beaa5632b04499456057c43c61d0d944d134d9a7246750",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "five_circle_model.py",
+      "original": "five_circle_model.py",
+      "original_sha256": "7b90c05f7ef4bf4108fab252ca8423e3b901d023c6f42e3160f1286577601605",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "shared_arc_recovery.py",
+      "original": "shared_arc_recovery.py",
+      "original_sha256": "2ba29b93a56465fa7c6cc491b73b2db6c548708fa2af6385c670d3b29964f8ce",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "partial_arc_information.py",
+      "original": "partial_arc_information.py",
+      "original_sha256": "c0512456c18d368b7f2c6f1011ea84095405da89892fed2327b04cd47da168fd",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "fast_force_response.py",
+      "original": "fast_force_response.py",
+      "original_sha256": "d37242c867318117fa06ced6a686900940ea8ef433ea4370c3e8b0b9edd88d69",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "shared_phase_fft.py",
+      "original": "shared_phase_fft.py",
+      "original_sha256": "776c6faefd848c47329b8d90903475ec7c877efa7c76eb51fe296cc66dfbbbda",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_decode.py",
+      "original": "live_decode.py",
+      "original_sha256": "fa4a410d10daaa3797f4c67d84d4a56517d21f428ecae2854113c3bfe51c3e60",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_pixel_axis.py",
+      "original": "live_pixel_axis.py",
+      "original_sha256": "dca2d72fd4e10f6b4a82509bd56381166fa5b2e64f216650ca3efb0220bb7280",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_frequency_pixels.py",
+      "original": "live_frequency_pixels.py",
+      "original_sha256": "8e903ab43d7881908497b99fa9b1c827a59a0f901b7055e15aa1a07179f2b1cc",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_scale_rollout.py",
+      "original": "live_scale_rollout.py",
+      "original_sha256": "78bc1f552a99b2ade53418bb4bb82997276f70df5fdf04c570cf3b623c5dbc2c",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_motion.py",
+      "original": "live_motion.py",
+      "original_sha256": "2720d6afdb9c3f4c524924b59ea95baf9f10c5a37f10927e26abe03334862d92",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_measurement_kf.py",
+      "original": "live_measurement_kf.py",
+      "original_sha256": "f950a881b29fb3bc3ad3cc8d6e23d8c0239a6e61dca2b9243827c580d7adb457",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_covariance.py",
+      "original": "live_covariance.py",
+      "original_sha256": "a3b57a1e024951f8e33ec8ab200940116cc5dd8346dea9031dd385595f143e01",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_worker.py",
+      "original": "live_worker.py",
+      "original_sha256": "7cb8a5fe14c711cd506e0c5ed57b6e32578f73e72a070de1f3b0144251151225",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "body_association.py",
+      "original": "body_association.py",
+      "original_sha256": "8a7ccf3f55204d88bc64b5716c832321673d6180693fab7036a9064b90f0064b",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_roi_refine.py",
+      "original": "live_roi_refine.py",
+      "original_sha256": "83f333478b3a9df02f344d1566a28604bd4a50901b77e10c5cb88aefaa8891e5",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_center_ensemble.py",
+      "original": "live_center_ensemble.py",
+      "original_sha256": "1e77e96cebd1867c24c635e54d5cd3761599113c8162576b03b72eb1d6f94f7d",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "run_fast_structure.py",
+      "original": "run_fast_structure.py",
+      "original_sha256": "a6c970e9b8a8c28c9fac2d2bceb4ebdb6b56a3c0b46ac0837edb7f8e6c155969",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "src/event_drone_forecast/__init__.py",
+      "original": "src/event_drone_forecast/__init__.py",
+      "original_sha256": "5cd05374cef0daa0ae1c01a4205368a9d029fe0c699d6467dc9514afa20ad4ab",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/geometry.py",
+      "original": "src/event_drone_forecast/geometry.py",
+      "original_sha256": "579dba7898a6bf1fe69afcedfedbce1a10b5209d4e2fd08b34168cbf235ad6d0",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/detector_backend.py",
+      "original": "src/event_drone_forecast/detector_backend.py",
+      "original_sha256": "459c88b2bd5d6af6ab9d260117375efefdfa69d66b6d3479e76e4cea13115028",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/raw_io.py",
+      "original": "src/event_drone_forecast/raw_io.py",
+      "original_sha256": "f376e9cc2b648a292b92fc9ff808d87d6eb0ec677bb5d9dc214dd7e343add98a",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/covariance.py",
+      "original": "src/event_drone_forecast/position/covariance.py",
+      "original_sha256": "042b83dd435f6d2f5de822b4741bde55496cd293ec093149ab3e18c8b115e735",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/kalman.py",
+      "original": "src/event_drone_forecast/position/kalman.py",
+      "original_sha256": "dc7fa3e9055a989e70dbbd4b25850d866810ee934f5ca42be65bf02c252bd0a6",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/motion.py",
+      "original": "src/event_drone_forecast/position/motion.py",
+      "original_sha256": "a6dbb865f7064314fe442262d6dfdcfe56686a1c89a3ad99cff41e8de2124530",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/robust.py",
+      "original": "src/event_drone_forecast/position/robust.py",
+      "original_sha256": "82dbcd4dfcef3a32b44e8e59c257fab259dffdb26dc79b8207397b334e308f24",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/rollout.py",
+      "original": "src/event_drone_forecast/position/rollout.py",
+      "original_sha256": "e368e8653589aa0c368b6a50041a10ab411e768adf6bcb68ef260b52dac20e71",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/_filterpy.py",
+      "original": "src/event_drone_forecast/position/_filterpy.py",
+      "original_sha256": "630eaf6303e3c8860b05e1e3dd5ed30788b7e5b7a437108308baea1a173706f0",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/position/__init__.py",
+      "original": "src/event_drone_forecast/position/__init__.py",
+      "original_sha256": "96a417eba93dc8661f3442bd44578ff8261a2fcf9293d7c814e521fe994783ac",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/__init__.py",
+      "original": "src/event_drone_forecast/_vendor/__init__.py",
+      "original_sha256": "351530cdaaf890cd13cbea11982d96a7f5bfe6941992b7a3ff69bae17e4128c2",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/helpers.py",
+      "original": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/helpers.py",
+      "original_sha256": "45ac0d338a5ae96caae37ccaced7ad1e45a4d848da17d4a8023e59213ef62f02",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/kalman_filter.py",
+      "original": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/kalman_filter.py",
+      "original_sha256": "602923a445aa167a43a721bef5b8e17bb31b0f43e1b08c880f414460eebcf689",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/LICENSE",
+      "original": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/LICENSE",
+      "original_sha256": "8ffce1097f1b1c0fba42e4449ef49aa05cb7b45566dd0989407839dba07af99c",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/UPSTREAM_SNAPSHOT.json",
+      "original": "src/event_drone_forecast/_vendor/filterpy_linear_upstream/UPSTREAM_SNAPSHOT.json",
+      "original_sha256": "9a303e34128e56ccc7619042d74bfc5e7880724c3b0b3b9be9c0bb8fb787bed3",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_process_upstream/discretization.py",
+      "original": "src/event_drone_forecast/_vendor/filterpy_process_upstream/discretization.py",
+      "original_sha256": "b3e625792e777bfef93f8a7d9020624c8750f66fc482eeec7b3b2c5ae2fdea96",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_process_upstream/LICENSE",
+      "original": "src/event_drone_forecast/_vendor/filterpy_process_upstream/LICENSE",
+      "original_sha256": "8ffce1097f1b1c0fba42e4449ef49aa05cb7b45566dd0989407839dba07af99c",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "src/event_drone_forecast/_vendor/filterpy_process_upstream/UPSTREAM_SNAPSHOT.json",
+      "original": "src/event_drone_forecast/_vendor/filterpy_process_upstream/UPSTREAM_SNAPSHOT.json",
+      "original_sha256": "78a62a8341e5126d714052bbb36bd90464f0508d37c06f322482896d136cd67f",
+      "mode": "verbatim"
+    },
+    {
+      "destination": "rotor_geometry.py",
+      "original": "research/stage146/branches146.py",
+      "original_sha256": "8fcdbd32bc571600bbd9cbdb261d54d15fbe638b62bb3514aa583c8223688704",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "1e27c1f069a29936188ac68e6ee7ba20391c433c9c0a1af11dc4a9f5dba8065d"
+        },
+        {
+          "name": "centres",
+          "ast_sha256": "86f07f7dcecf3c0cea213cd116084485277d725e651c8ff7073896ec77f370c5"
+        },
+        {
+          "name": "unit",
+          "ast_sha256": "303aaac52a51d64f23fa727528ece970a2d9a7d30878b6b3d644d5425682380f"
+        },
+        {
+          "name": "metric",
+          "ast_sha256": "0e888d5ffac93606840524f24303b28418410265a9900854c751794b15a7e9f5"
+        },
+        {
+          "name": "ellipse_tensor",
+          "ast_sha256": "1c99063c9d24d43dbd6d1891be01b19cc5ed07582015dbcdcdcd96eb3a6fa673"
+        },
+        {
+          "name": "three_affine_hypotheses",
+          "ast_sha256": "f4755f7f199b85c094d3fecaf26c91ffe24b6aec771ea714cdc56030101eed19"
+        },
+        {
+          "name": "two_axis",
+          "ast_sha256": "cca411079130a81418e9ef51eb3c9538b639e8db8dd132a80336fe4f7b0a382e"
+        },
+        {
+          "name": "plane_axis",
+          "ast_sha256": "a50cf67c01d39863fcf9b513886ed5a54a2604edac28c7f38c4193de3d41412c"
+        },
+        {
+          "name": "BranchGeometry",
+          "ast_sha256": "c9724c8ecbb83e5c062ddb684110ab3405cd02f8059faf10362ed1974e15f982"
+        },
+        {
+          "name": "rotor_rates",
+          "ast_sha256": "6f9c2e8ddac834429b9b450c9cca03a27863ec7c5fdf445f6fc277d6ed491ee9"
+        }
+      ]
+    },
+    {
+      "destination": "curvature_split.py",
+      "original": "research/stage147/curvature147.py",
+      "original_sha256": "833a02d459a3e4fdb255cc6e09573791d16d4ff70a5b5ecbe5ccae684fcc3029",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "8de283ceba14607441e23598c0b57c418fee01d6a453f9038b60672aba56db02"
+        },
+        {
+          "name": "notches",
+          "ast_sha256": "6b797cd04a31de609dc5341369cf9ff999060d42317fd9f1d2e5bf74c74ef268"
+        },
+        {
+          "name": "fit_arc",
+          "ast_sha256": "190b023636c25bdcf05d9f75c8070fe14d1f2d252726d59627cfadcb20b492df"
+        },
+        {
+          "name": "pair_evidence",
+          "ast_sha256": "afa46fb72b3a395754dce181ba11429f19363b34a6902b60f9bb1590a21267c2"
+        },
+        {
+          "name": "split_contour",
+          "ast_sha256": "6cc6d374388e7ffd2461436f0e4502c175163c00f1a2c2df61746b6ab94393d5"
+        }
+      ]
+    },
+    {
+      "destination": "arc_parameters.py",
+      "original": "research/stage148/guided148.py",
+      "original_sha256": "b3a272b0aed1051b83de526ca10364fb404fb1a5b101ef5b2d9ad891235fdfb7",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "155e7c28af28043383f931063621260d647cb05151838c06129fce2774479f19"
+        }
+      ]
+    },
+    {
+      "destination": "body_axis.py",
+      "original": "research/stage6/silhouette.py",
+      "original_sha256": "18d92c6a102b2bd4a4f6329a1031ed5b1862e5b400ed611ccb6617878f089d88",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "a7480d3ed56c732c754ff8c744e7032fb7724b26c294e6c1656e846276e42d41"
+        },
+        {
+          "name": "angle_distance",
+          "ast_sha256": "42e44343ccadd3b7109e1aa6d1c14cd45f40e078c2800538ea910125bea8286b"
+        },
+        {
+          "name": "principal",
+          "ast_sha256": "b1aa8f1b335ccebc5f98d63bf6557242a7e0d8cd254bb05d5a44c41a3d768fcf"
+        },
+        {
+          "name": "body_measurement",
+          "ast_sha256": "c2de4cade22acef951cb2c48d104dd0fa08b488d08bd54fa1ad4f70be79c7137"
+        }
+      ]
+    },
+    {
+      "destination": "frequency_features.py",
+      "original": "research/stage79/native79.py",
+      "original_sha256": "d316a0b0c86987b47e989dd32b1bd68cedaebe7aa7074ed1da3a0c6365829de1",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "04c5b4401e7380d1149b766d824bbe3a95f8844cde0fb3082875cc943d800853"
+        },
+        {
+          "name": "engine",
+          "ast_sha256": "46244cac04376c421e206a88fd87a68f7305802ac6b18723ec30cec62a10baf4"
+        },
+        {
+          "name": "copy_frequency",
+          "ast_sha256": "bd0b6fe801d4ed30403085b1e969e3c554bf2ee39f5573929738b7e9d2821302"
+        },
+        {
+          "name": "checked_process",
+          "ast_sha256": "98e2a7c62a6ff6d941fba99264a268c414c51229862911e6ddd00340ae9c2b5e"
+        },
+        {
+          "name": "summarize",
+          "ast_sha256": "0484e63a44ec24846233083e2671a04c927a7b058f42178ca80427d292d2dc83"
+        }
+      ]
+    },
+    {
+      "destination": "native_axis.py",
+      "original": "research/stage141/native_axis141.py",
+      "original_sha256": "2365801ecf4f17ac5a773cec9f95bdcacee6127059f28f100fcd8b026a3ea360",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "0869339a9ac322c4c7cdeecd5154319597c027b8a0cb0df3dc0864afa0501b57"
+        },
+        {
+          "name": "NativeAxis",
+          "ast_sha256": "4d8a59a8fac20e197a1faa8897080cba99ae3b18a532558ef8f476f4b788265d"
+        },
+        {
+          "name": "measure_current",
+          "ast_sha256": "97f2c13c2f286990fe55d78de87d420ae1855b1030e78c45c6ec0e2e6b058f25"
+        }
+      ]
+    },
+    {
+      "destination": "live_structure_bridge.py",
+      "original": "live_structure_bridge.py",
+      "original_sha256": "f744d90dc11db064a310804866c1a4755e675305647f19d744fd8cd926be574e",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "97a7fb32eb75929cfaccd64fb821dedd5eb8ee8394133230ed81502cc404d663"
+        },
+        {
+          "name": "QualifiedCenter",
+          "ast_sha256": "63e852c8be5b05c5597f71a5058ff3b0611751ef1bef6b4c85bcc0e6a910676e"
+        },
+        {
+          "name": "NoiseKF",
+          "ast_sha256": "905a03459304d180c87d812706eda905f41bdd824bab5cc45d43e4c16e523d9b"
+        },
+        {
+          "name": "GeometryMotion",
+          "ast_sha256": "5cb0ca18c68a32ac52964d5e757abf00652a6ce329856254bb252929afbe6f46"
+        }
+      ]
+    },
+    {
+      "destination": "lumped_disturbance.py",
+      "original": "lumped_disturbance.py",
+      "original_sha256": "e81d639822a7d837a59808ed0de3e9870497b26cd89ae0e2b83c19603f53d058",
+      "mode": "AST_verified_definition_extraction",
+      "definitions": [
+        {
+          "name": "PARAMS",
+          "ast_sha256": "ac0258eb992f76ebd8682ff9afc7762b48dc22bb8c0fbc3eb92331e8e740328a"
+        },
+        {
+          "name": "LumpedDisturbance",
+          "ast_sha256": "ea5a16cc49a0cf27d69c6e283de9653b0bdfdf3231b6d9d4a78c0e233610ab48"
+        },
+        {
+          "name": "forecasts",
+          "ast_sha256": "b9261eeeed32887d14066a734e23afdd2f56cae23e988a3c8ce34f3dc41fbad3"
+        }
+      ]
+    }
+  ]
+}
