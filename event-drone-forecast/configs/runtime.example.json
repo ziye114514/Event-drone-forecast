@@ -1,0 +1,7 @@
+{
+  "sdk_python": null,
+  "gpu_python": null,
+  "detector_weights": "../weights/best.onnx",
+  "detector_sha256": "ed8016494a798df884573ffbbcec0e69d1331886da3222909e90135048c0f7a4",
+  "cache_dir": "../.cache"
+}
