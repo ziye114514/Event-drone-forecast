@@ -6,10 +6,10 @@
 如何保留可观测信息，并结合桨叶周期代理与未知合力反馈预测未来 **0.1 / 0.2 / 0.4秒** 的图像位置。
 输入是原生ON/OFF事件，不使用灰度强度重建。
 
-![原生ON/OFF与五圆输出示例](examples/clear.gif)
+![原生ON/OFF与五圆输出示例](event-drone-forecast/examples/clear.gif)
 
 这是 **v0.4.0-alpha.1 源码预览版**，不是论文官方代码、已验证的真实推力系统或SOTA结果。
-先看 [方法与贡献](docs/METHOD.md)、[结果与限制](docs/RESULTS.md)、[模型获取条件](docs/MODEL_CARD.md)。
+先看 [方法与贡献](event-drone-forecast/docs/METHOD.md)、[结果与限制](event-drone-forecast/docs/RESULTS.md)、[模型获取条件](event-drone-forecast/docs/MODEL_CARD.md)。
 
 ## 主要功能
 
@@ -37,9 +37,10 @@ flowchart LR
 
 ## 不需要硬件的快速演示
 
-Python 3.11或更新版本，安装基础依赖后：
+源码位于仓库的 `event-drone-forecast/` 子目录。Python 3.11或更新版本，从仓库根目录执行：
 
 ```text
+cd event-drone-forecast
 python -m pip install -e .
 python forecast.py doctor --base-only
 python forecast.py demo --output outputs/demo_01
@@ -51,10 +52,12 @@ python -m unittest discover -s tests -v
 
 ## 使用自己的RAW
 
+以下命令均在 `event-drone-forecast/` 子目录执行。
+
 当前完整RAW入口在 **Windows、Metavision SDK、NVIDIA CUDA** 环境做过本机小段试验，
 处理原生 **1280×720** 数据。数据、SDK和检测权重不随包提供。
 
-1. 按 [安装与运行](docs/GETTING_STARTED.md) 配置SDK/GPU环境。
+1. 按 [安装与运行](event-drone-forecast/docs/GETTING_STARTED.md) 配置SDK/GPU环境。
 2. 复制 `configs/runtime.example.json` 为 `configs/local.json`，填写兼容权重与SHA256。
 3. 先运行doctor，再运行预测：
 
@@ -81,7 +84,7 @@ python forecast.py predict --config configs/local.json --raw data/event.raw --ou
 清晰/侧视两段的平均计算能力约30.8/36.1FPS；源更新率约28.9/29.8Hz，
 不能据此声明持续低延迟30FPS。视频播放FPS也不是处理FPS。
 
-见 [演示视频](examples/README.md)、[完整结果口径](docs/RESULTS.md) 和 `examples/metrics.json`。
+见 [演示视频](event-drone-forecast/examples/README.md)、[完整结果口径](event-drone-forecast/docs/RESULTS.md) 和 [指标记录](event-drone-forecast/examples/metrics.json)。
 
 ## 项目贡献与已有工作
 
@@ -90,18 +93,18 @@ python forecast.py predict --config configs/local.json --raw data/event.raw --ou
 
 主要参考 [Relative State Estimation using Event-Based Propeller Sensing](https://arxiv.org/abs/2604.18289)、
 [HelixTrack](https://arxiv.org/abs/2603.09235)、[CoHelix](https://arxiv.org/abs/2610.31384)、
-[EventPro](https://arxiv.org/abs/2511.13100)。各自作用、源码复用范围见 [相关工作](docs/RELATED_WORK.md)。
+[EventPro](https://arxiv.org/abs/2511.13100)。各自作用、源码复用范围见 [相关工作](event-drone-forecast/docs/RELATED_WORK.md)。
 
 ## 许可、引用与开发说明
 
 本**集成发布版采用AGPL-3.0-only**。原有MIT版权声明及FilterPy等第三方许可保留，见
-[NOTICE](NOTICE.md) 和 [第三方说明](THIRD_PARTY_NOTICES.md)。SDK、CUDA和检测权重不随本许可证重新授权。
-ONNX导出不自动豁免上游模型许可。示例媒体的授权范围见 `examples/README.md`。
+[完整许可证](event-drone-forecast/LICENSE)、[NOTICE](event-drone-forecast/NOTICE.md) 和 [第三方说明](event-drone-forecast/THIRD_PARTY_NOTICES.md)。SDK、CUDA和检测权重不随本许可证重新授权。
+ONNX导出不自动豁免上游模型许可。示例媒体的授权范围见 [示例媒体说明](event-drone-forecast/examples/README.md)。
 
-请用 `CITATION.cff` / `CITATION.bib` 引用软件版本；同时引用实际借鉴或使用的上游工作。
+请用 [CITATION.cff](event-drone-forecast/CITATION.cff) / [CITATION.bib](event-drone-forecast/CITATION.bib) 引用软件版本；同时引用实际借鉴或使用的上游工作。
 项目开发使用AI编码工具辅助实现、资料检索和文档整理，维护者负责设计取舍、结果核验和公开声明；
 不能把AI生成文本或推测当作实验真值。
 
 这是研究与学习工具；真实RPM、牛顿推力、三维姿态、未知录像泛化和部署可靠性仍待验证。
 
-准备发布本仓库时可直接使用 [GitHub发布文案](GITHUB_PUBLISH.zh-CN.md) 与 [Release说明](RELEASE_NOTES.md)。
+准备发布本仓库时可直接使用 [GitHub发布文案](event-drone-forecast/GITHUB_PUBLISH.zh-CN.md) 与 [Release说明](event-drone-forecast/RELEASE_NOTES.md)。
