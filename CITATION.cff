@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite this software version and the upstream methods you actually use."
+type: software
+title: "Event Drone Forecast: Five-Circle Event-Based Drone Modeling and Forecasting"
+authors:
+  - name: "Event Drone Forecast contributors"
+version: "0.4.0-alpha.2"
+date-released: 2026-10-28
+license: AGPL-3.0-only
