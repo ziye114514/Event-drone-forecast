@@ -3,12 +3,12 @@ requires = ["setuptools>=65"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "event-drone-forecast"
-version = "0.4.0a1"
+version = "0.4.0a2"
 description = "Five-circle event-camera drone modeling and image-plane forecast research prototype"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "AGPL-3.0-only"}
-dependencies = ["numpy>=2,<3", "scipy>=1.14,<2", "opencv-python-headless>=4.10,<6", "pillow>=10"]
+dependencies = ["numpy>=2,<2.5", "scipy>=1.14,<2", "opencv-python-headless>=4.10,<6", "pillow>=10"]
 [project.optional-dependencies]
 report = ["matplotlib>=3.9"]
 [tool.setuptools]

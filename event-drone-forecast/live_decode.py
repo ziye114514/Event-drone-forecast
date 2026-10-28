@@ -1,7 +1,8 @@
 """Official SDK delta-time iterator for paced replay, keeping native timestamps."""
-def native_batches(raw, begin, duration,build_index=True,step_us=20000):
+def native_batches(raw, begin, duration,build_index=True,step_us=20000,read_chunk=100000):
     from metavision_core.event_io import EventsIterator
     if not isinstance(step_us,int) or step_us<=0:raise ValueError('Positive integer step_us required')
+    if not isinstance(read_chunk,int) or read_chunk<=0:raise ValueError('Positive integer read_chunk required')
     options=dict(start_ts=round(begin*1e6),delta_t=step_us,max_duration=round(duration*1e6),
                  mode='delta_t',relative_timestamps=False)
     if build_index:
@@ -12,7 +13,7 @@ def native_batches(raw, begin, duration,build_index=True,step_us=20000):
         # Public SDK configuration only; never patch the reader or decoder.
         from metavision_hal import DeviceDiscovery,RawFileConfig
         config=RawFileConfig();config.do_time_shifting=True
-        config.n_events_to_read=100000;config.build_index=False
+        config.n_events_to_read=read_chunk;config.build_index=False
         device=DeviceDiscovery.open_raw_file(str(raw),config)
         if device is None:raise OSError('Cannot open RAW with explicit non-indexed configuration')
         iterator=EventsIterator.from_device(device,**options)

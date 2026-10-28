@@ -1,0 +1,4 @@
+# Optional CPU count kernel, tested with SDK Python3.11/NumPy2.4.
+# The existing SDK/NumPy installation does not need to be changed.
+numba==0.64.0
+llvmlite==0.46.0

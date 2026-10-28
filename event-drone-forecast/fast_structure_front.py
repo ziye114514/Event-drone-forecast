@@ -22,7 +22,7 @@ from partial_arc_information import update as update_partial_arcs
 
 def roi_bounds(box,w=1280,h=720,padding=.15):
     b=np.asarray(box,float);pad=np.maximum((b[2:]-b[:2])*padding,12.)
-    return np.r_[np.maximum(0,np.floor(b[:2]-pad)),np.minimum([w,h],np.ceil(b[2:]+pad))].astype(int)
+    return np.concatenate((np.maximum(0,np.floor(b[:2]-pad)),np.minimum([w,h],np.ceil(b[2:]+pad)))).astype(int)
 
 
 def roi_events(events,bounds):
@@ -42,7 +42,7 @@ class NativeROI:
         return self.output.numpy()
 
 
-def count_pair(events,bounds,t,selector=None):
+def count_pair(events,bounds,t,selector=None,cpp_histogram=False):
     x,y,X,Y=bounds;w,h=X-x,Y-y
     # Timestamp-ordered suffix is a view, not a structured-array boolean copy.
     begin=int(np.searchsorted(events['t'],round(t*1e6)-20000))
@@ -51,8 +51,18 @@ def count_pair(events,bounds,t,selector=None):
     index=(e['y'].astype(np.int32)-y)*w+(e['x'].astype(np.int32)-x)
     # One joint polarity/pixel histogram avoids two boolean gathers of index.
     # Both returned planes remain contiguous and retain exact integer counts.
-    joint=np.bincount(index+e['p'].astype(np.int32)*(w*h),minlength=2*w*h)
-    counts=joint.reshape(2,h,w).astype(np.float32)
+    ids=index+e['p'].astype(np.int32)*(w*h);bins=2*w*h
+    if cpp_histogram and len(e)<2**24 and bins<=2**24:
+        # Every pixel index and count is exactly representable as float32.
+        # OpenCV writes the final float32 histogram directly, avoiding a large
+        # int64 histogram plus its float32 copy. No saturation or sampling.
+        if len(ids):
+            if ids.min()<0 or ids.max()>=bins:raise ValueError('ROI event index outside count histogram')
+            counts=cv2.calcHist([ids.astype(np.float32)],[0],None,[bins],[0.,float(bins)]).reshape(2,h,w)
+        else:counts=np.zeros((2,h,w),np.float32)
+    else:
+        joint=np.bincount(ids,minlength=bins)
+        counts=joint.reshape(2,h,w).astype(np.float32)
     return [counts[1],counts[0]]
 
 
@@ -64,7 +74,7 @@ def record(g,offset):
 
 
 class FastStructure:
-    def __init__(self,reuse_uncertainty=False,continuous=True,shared_arc_recovery=True,guide_full_only=False,bipolar_guide_area=False,contrast_guide_area=True,current_shape_feedback=True,partial_arc_information=True):
+    def __init__(self,reuse_uncertainty=False,continuous=True,shared_arc_recovery=True,guide_full_only=False,bipolar_guide_area=False,contrast_guide_area=True,current_shape_feedback=True,partial_arc_information=True,optimized_compute=False,side_axis_budget=False,native_histogram=False,jit_counts=False,jit_conics=False):
         self.geometry=BranchGeometry();self.model=ContinuousFiveCircle(current_shape_feedback) if continuous else FiveCircleModel(3)
         self.tick=0;self.selector=NativeROI()
         self.previous=[];self.previous_body=None;self.previous_t=None
@@ -74,6 +84,28 @@ class FastStructure:
         self.bipolar_guide_area=bipolar_guide_area
         self.contrast_guide_area=contrast_guide_area
         self.partial_arc_information=partial_arc_information
+        self.side_axis_budget=side_axis_budget;self.last_side_qualified=False
+        self.native_histogram=native_histogram
+        self.count_current=None
+        if jit_counts:
+            from native_counts_numba import NumbaCounter
+            self.count_current=NumbaCounter()
+        self.fit_current=fit_rotor_geometry;self.split_current=split_contour
+        self.optimized_compute=optimized_compute
+        self.measure_body=body_measurement
+        if optimized_compute:
+            from functools import partial
+            from fast_geometry_compute import fit_rotor_geometry_fast,split_contour_fast
+            self.fit_current=fit_rotor_geometry_fast;self.split_current=split_contour_fast
+            self.measure_body=partial(body_measurement,skip_unqualified_lines=True)
+        self.uncertainty_current=None
+        if jit_conics:
+            if not optimized_compute:raise ValueError('Fused conic uncertainty requires optimized compute')
+            from functools import partial
+            from native_geometry_numba import JITUncertainty,JITLine
+            self.uncertainty_current=JITUncertainty()
+            line=JITLine();self.uncertainty_current.provenance['line_kernel']=line.provenance
+            self.fit_current=partial(self.fit_current,uncertainty_fn=self.uncertainty_current,line_fn=line)
 
     def quick_conic(self,contour,offset,body,t,max_major):
         """Current AMS conic; reuse conservative uncertainty for at most2ticks.
@@ -106,27 +138,36 @@ class FastStructure:
             uncertainty_approximate=True)
         return g
 
-    def step(self,events,t,body,q,velocity,frequency_pixels_unique=False):
+    def step(self,events,t,body,q,velocity,frequency_pixels_unique=False,defer_rates=False):
         self.tick+=1
         empty=dict(state='insufficient',observed_count=0,observed_rotors=[],confidence=0.)
         if not body.get('detected'):
+            self.last_side_qualified=False
             return self.model.step(t,body,empty),[],dict(reason='no_current_body'),None
         bounds=roi_bounds(body['bbox']);x,y,X,Y=bounds
-        on,off=count_pair(events,bounds,t,self.selector);density=np.minimum(on,off)
+        if self.count_current is not None:on,off=self.count_current(events,bounds,t,self.selector)
+        else:on,off=count_pair(events,bounds,t,self.selector,cpp_histogram=self.native_histogram)
+        density=np.minimum(on,off)
         # Same stage6 thresholds and side qualification, on the small native ROI.
-        local_box=np.asarray(body['bbox'])-np.r_[bounds[:2],bounds[:2]]
+        local_box=np.asarray(body['bbox'])-np.tile(bounds[:2],2)
         side={}
+        side_fast=False
+        if self.side_axis_budget and self.last_side_qualified and self.previous_t is not None and t-self.previous_t<=.12 and self.tick%3!=1:
+            side=self.measure_body(density,local_box)
+            side_fast=bool(side.get('valid') and side.get('confidence',0)>=.45)
         # Reuse neighbor10 exactly: spatially align each polarity BEFORE min.
         # min(blur(ON),blur(OFF)) differs materially from blur(min(ON,OFF)).
-        feature=np.minimum(cv2.GaussianBlur(on,(3,3),.8),cv2.GaussianBlur(off,(3,3),.8))
-        feature[(on+off)<2]=0
-        blurred=cv2.GaussianBlur(feature,(3,3),.8)
-        raw_mask=np.uint8(blurred>=4.)*255
-        # Existing morphology: remove isolated gaps without fitting their edges.
-        mask=cv2.morphologyEx(raw_mask,cv2.MORPH_OPEN,np.ones((2,2),np.uint8))
-        mask=cv2.morphologyEx(mask,cv2.MORPH_CLOSE,np.ones((3,3),np.uint8))
-        contours,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
-        contours=sorted([c for c in contours if len(c)>=16 and cv2.contourArea(c)>=20],key=cv2.contourArea,reverse=True)[:12]
+        raw_mask=None;contours=[]
+        if not side_fast:
+            feature=np.minimum(cv2.GaussianBlur(on,(3,3),.8),cv2.GaussianBlur(off,(3,3),.8))
+            feature[(on+off)<2]=0
+            blurred=cv2.GaussianBlur(feature,(3,3),.8)
+            raw_mask=np.uint8(blurred>=4.)*255
+            # Existing morphology: remove isolated gaps without fitting their edges.
+            mask=cv2.morphologyEx(raw_mask,cv2.MORPH_OPEN,np.ones((2,2),np.uint8))
+            mask=cv2.morphologyEx(mask,cv2.MORPH_CLOSE,np.ones((3,3),np.uint8))
+            contours,_=cv2.findContours(mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+            contours=sorted([c for c in contours if len(c)>=16 and cv2.contourArea(c)>=20],key=cv2.contourArea,reverse=True)[:12]
         rotors=[];split_count=0
         # Degenerate side views need an axis, not repeated ill-conditioned conics.
         # A thin whole-body projection alone cannot exclude four visible discs.
@@ -139,7 +180,10 @@ class FastStructure:
                 # proposals are confined to the validated curvature path below.
                 max_major=min(500.,1.5*max(X-x,Y-y))
                 g=self.quick_conic(c,bounds[:2],body,t,max_major)
-                if g is None:g=fit_rotor_geometry(c,max_major=max_major,allow_arc=False)
+                if g is None:
+                    options=dict(max_major=max_major,allow_arc=False)
+                    if self.optimized_compute:options['minimum_major']=max([r['major'] for r in rotors],default=0.)/2.5
+                    g=self.fit_current(c,**options)
                 if g is not None:
                     g['arc_center_qualified']=bool(g['mode']=='arc' and g.get('visible_arc_fraction',0)>=.48 and
                         g.get('support_fraction',0)>=.6 and g.get('fit_condition',1e9)<=1500 and
@@ -153,7 +197,7 @@ class FastStructure:
             # Original concavity/arc validation runs at10Hz, never on every side tick.
             if len(rotors)!=4 and self.tick%15==1:
                 for c in contours[:1]:
-                    arcs,_=split_contour(c)
+                    arcs,_=self.split_current(c)
                     if arcs is None:continue
                     replacements=[]
                     for arc in arcs:
@@ -180,7 +224,7 @@ class FastStructure:
             geom=self.geometry.step(t,body,adapted);geom['observed_rotors']=rotors
         structure=self.model.step(t,body,geom)
         normal_constraints=dict(updated=False,reason='disabled')
-        if self.partial_arc_information:
+        if self.partial_arc_information and not side_fast:
             normal_constraints=update_partial_arcs(self.model,t,body,raw_mask,bounds[:2],rotors)
             if normal_constraints['updated']:
                 structure['model_centers']=self.model._hubs().tolist()
@@ -198,8 +242,8 @@ class FastStructure:
                 visible_plane=True
                 structure.update(axis_xy=normal.tolist(),geometric_weight=.35,
                     pose_source='current_qualified_visible_conics',pose_without_complete_five_circle=True)
-        if structure['current_geometric_center'] is None and not visible_plane:
-            side=body_measurement(density,local_box)
+        if structure['current_geometric_center'] is None and not visible_plane and not side:
+            side=self.measure_body(density,local_box)
         if side.get('valid') and side.get('confidence',0)>=.45 and structure['current_geometric_center'] is None:
             n=np.asarray(side['normal_axis_xy'])
             # Whole-body elongation is an unsigned axis, not proof of exactly
@@ -212,10 +256,15 @@ class FastStructure:
                 reason='stage6_current_ROI_count_axis',axis_support=dict(side,center=(np.asarray(side['center'])+[x,y]).tolist()))
             if hasattr(self.model,'observe_axis'):
                 structure=self.model.observe_axis(structure,n,side['confidence'],t)
-        rates=rotor_rates(q,rotors,t,velocity,1280,unique_pixels=frequency_pixels_unique) if rotors else []
+        rates=rotor_rates(q,rotors,t,velocity,1280,unique_pixels=frequency_pixels_unique) if rotors and not defer_rates else []
         self.previous=rotors;self.previous_body=np.asarray(body['center']);self.previous_t=t
+        self.last_side_qualified=bool(side.get('valid') and side.get('confidence',0)>=.45)
         diag=dict(roi=bounds.tolist(),current_window_us=20000,threshold=4.,contours=len(contours),
             curvature_splits=split_count,shared_arc_recovery=arc_recovery,
             partial_arc_information=normal_constraints,
             side=side,observed_regions=len(rotors),rotors=rotors,roi_pixels=int((X-x)*(Y-y)))
+        if self.side_axis_budget:
+            diag.update(current_axis_budget_tick=side_fast,full_conic_refresh_interval_ticks=3,
+                rotor_count_unresolved_on_axis_tick=side_fast,
+                scheduled_tick_is_not_a_new_rotor_or_hidden_pose_observation=True)
         return structure,rates,diag,(density,bounds)

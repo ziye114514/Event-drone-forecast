@@ -46,6 +46,9 @@ def main(argv=None):
     predict.add_argument('--legacy-structure',action='store_true');predict.add_argument('--no-partial-arc-information',action='store_true')
     predict.add_argument('--delayed-disturbance-control',action='store_true');predict.add_argument('--no-force-gap-hold',action='store_true')
     predict.add_argument('--no-frame-verification',action='store_true')
+    predict.add_argument('--profile',choices=('baseline','candidate'),default='baseline',help='Baseline preserves alpha.1 launch options; candidate enables the documented alpha.2 joint physics configuration')
+    predict.add_argument('--sdk-avx2',action='store_true',help='Optional local SDK-header adapter; requires an explicit local build, AVX2 CPU and compatible SDK license')
+    predict.add_argument('--current-nn-on-loss',action='store_true',help='Use current NN if current image tracking is lost; used in the train2 development run')
     for cmd in (doctor,predict):
         cmd.add_argument('--config');cmd.add_argument('--sdk-python');cmd.add_argument('--gpu-python')
         cmd.add_argument('--detector-weights');cmd.add_argument('--detector-sha256');cmd.add_argument('--cache-dir')
@@ -79,6 +82,9 @@ def main(argv=None):
         for flag in ('preview','legacy_structure','no_partial_arc_information','delayed_disturbance_control','no_force_gap_hold'):
             if getattr(a,flag):command+=['--'+flag.replace('_','-')]
         if a.kinematic_control:command+=['--with-kinematic-control']
+        if a.profile=='candidate':command+=['--target-candidate','--rigid-motion','--tangent-disturbance','--structure-guided-nn']
+        if a.sdk_avx2:command+=['--sdk-avx2']
+        if a.current_nn_on_loss:command+=['--current-nn-on-loss']
         if a.dry_run:
             print(json.dumps(dict(command=command,RAW_contents_read=False,output_created=False,GPU_started=False),ensure_ascii=False,indent=2));return 0
         return subprocess.call(command,cwd=ROOT)

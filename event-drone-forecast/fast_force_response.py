@@ -16,6 +16,8 @@ class FastForceResponse:
         self.gain_signal_to_noise=float(gain_signal_to_noise)
         self.inputs=deque();self.pending=deque();self.rows=deque();self.last_origin=None
         self.learned=False;self.gain_sigma=None;self.frozen_reason='not_enough_matured_positions'
+        self.gain_learning_enabled=True
+        self.input_learning_current=True
 
     def step(self,t,c,observed_position,u,quality=0.):
         dt=0. if self.last_t is None else t-self.last_t
@@ -23,7 +25,7 @@ class FastForceResponse:
         if self.last_t is not None and dt>.5:self.__init__(self.gain,self.early_disturbance,self.hold_acceleration_gaps,self.gain_signal_to_noise);dt=0.
         self.last_t=t
         good=u is not None and np.isfinite(u).all() and quality>=.35
-        self.inputs.append((t,None if not good else np.asarray(u,float)))
+        self.inputs.append((t,None if not good or not self.input_learning_current else np.asarray(u,float)))
         # Only positions observed at/after maturity supervise earlier predictions.
         if c is not None and observed_position is not None:
             p=np.asarray(observed_position,float)
@@ -51,7 +53,7 @@ class FastForceResponse:
             energy=float(np.sum(du*du));excitation=float(np.sqrt(energy/len(U)))
             info['excitation_rms']=excitation
             self.frozen_reason='insufficient_input_excitation'
-            if excitation>=.08:
+            if excitation>=.08 and self.gain_learning_enabled:
                 k=float(np.sum(du*dr)/max(energy,1e-9));res=dr-k*du
                 sigma=float(np.sqrt(np.sum(res*res)/max(1,2*len(U)-3)/max(energy,1e-9)))
                 self.gain_sigma=sigma
@@ -80,7 +82,7 @@ class FastForceResponse:
             # Reacquisition after a gap establishes a new image/proxy gauge.
             if self.d is None or self.last_valid is None or t-self.last_valid>.12:
                 self.d=a0-self.gain*np.asarray(u)
-            self.last_valid=t
+            if self.input_learning_current:self.last_valid=t
             a=self.gain*np.asarray(u)+self.d
             norm=np.linalg.norm(a)
             if norm>3000:a*=3000/norm

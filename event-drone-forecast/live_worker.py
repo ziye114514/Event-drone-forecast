@@ -62,6 +62,18 @@ def main(name,weights,expected_sha256,cache_dir,body_association=False,frame_rat
             elapsed=(time.perf_counter()-tick)*1000
             boxes=[dict(bbox=r[:4].tolist(),confidence=float(r[4]),class_id=int(r[5])) for r in b]
             extra={}
+            if request.get('recover_roi') and not request.get('warmup') and not boxes:
+                from live_roi_refine import refine
+                hint=request.get('roi_hint');recovery_start=time.perf_counter()
+                recovered=None;recovery=dict(reason='no_recent_strong_ROI')
+                if hint is not None:
+                    recovered,recovery=refine(backend,backend_module,image,hint)
+                if recovered is not None:
+                    boxes=[dict(recovered,roi_recovered=True,current_detection=True,
+                        search_hint_is_not_a_measurement=True)]
+                extra.update(roi_recovery=dict(recovery,attempted=hint is not None,accepted=recovered is not None,
+                    recovery_ms=(time.perf_counter()-recovery_start)*1000,
+                    source='current_frame_zoom_NN_after_full_frame_miss'))
             if secondary is not None:
                 second_start=time.perf_counter()
                 second=backend_module.boxes(secondary.run(backend_module.preprocess(image)))

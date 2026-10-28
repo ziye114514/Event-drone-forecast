@@ -23,6 +23,9 @@ class ContinuousFiveCircle:
         hubs=np.asarray(g['model_centers']);center=diagonal_center(hubs)
         scale=max(1.,np.sqrt(np.mean(np.sum((hubs-center)**2,axis=1))))
         self.template=(hubs-center)/scale
+        # Template coordinates stay fixed until a new seed. Reuse the exact
+        # same design matrix instead of rebuilding it in every hub query.
+        self.design=np.column_stack((np.ones(4),self.template))
         self.beta=np.array([center[0],scale,0.,center[1],0.,scale])
         self.P=np.diag([36.,16.,16.,36.,16.,16.])
         self.body=np.asarray(body['center']);self.t=t;self.last_full=t;self.last_update=t
@@ -31,8 +34,8 @@ class ContinuousFiveCircle:
         self.informative_independent_centres=4
 
     def _hubs(self,beta=None):
-        b=self.beta if beta is None else beta;D=np.c_[np.ones(4),self.template]
-        return np.c_[D@b[:3],D@b[3:]]
+        b=self.beta if beta is None else beta;D=self.design
+        return np.column_stack((D@b[:3],D@b[3:]))
 
     def guidance_reference(self,t,max_age):
         """A current rank6 observation can refresh guidance, not axis/coasting.
@@ -45,7 +48,7 @@ class ContinuousFiveCircle:
         age=t-self.last_informative
         if age>max_age+1e-9:
             return dict(eligible=False,reason='informative_observation_expired',reference_age_s=age)
-        D=np.c_[np.ones(4),self.template];H=np.zeros((4,2,6))
+        D=self.design;H=np.zeros((4,2,6))
         H[:,0,:3]=D;H[:,1,3:]=D
         predicted=self.P+np.diag([36.,225.,225.,36.,225.,225.])*max(0.,t-self.t)
         covariance=H@predicted@H.transpose(0,2,1)
@@ -82,7 +85,7 @@ class ContinuousFiveCircle:
         self.P+=np.diag([36.,225.,225.,36.,225.,225.])*max(dt,0.)
         if g['mode']=='four':
             self.full_observations+=1
-            D=np.c_[np.ones(4),self.template];H=np.zeros((8,6));H[::2,:3]=D;H[1::2,3:]=D
+            D=self.design;H=np.zeros((8,6));H[::2,:3]=D;H[1::2,3:]=D
             z=np.asarray(g['model_centers']).ravel();R=np.eye(8)*9.
             S=H@self.P@H.T+R;K=np.linalg.solve(S,H@self.P).T
             self.beta+=K@(z-H@self.beta);J=np.eye(6)-K@H;self.P=J@self.P@J.T+K@R@K.T
@@ -110,7 +113,7 @@ class ContinuousFiveCircle:
             order=np.argsort(costs);ids=assignments[order[0]];margin=float(costs[order[1]]-costs[order[0]])
             gate=max(8.,.6*np.median([r['major'] for r in rotors]))
             if np.sqrt(costs[order[0]])<=gate and margin>4.:
-                D=np.c_[np.ones(len(ids)),self.template[ids]]
+                D=self.design[ids]
                 H=np.zeros((2*len(ids),6));H[::2,:3]=D;H[1::2,3:]=D
                 z=p.ravel();variance=np.repeat([max(2.,r.get('center_sigma_px',3.))**2 for r in rotors],2)
                 S=H@self.P@H.T+np.diag(variance);innovation=z-H@self.beta

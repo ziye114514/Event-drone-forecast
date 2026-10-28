@@ -26,21 +26,25 @@ def update(model, t, body, raw_mask, offset, rotors):
     contours,_=cv2.findContours(raw_mask,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
     points=[c.reshape(-1,2) for c in contours if len(c)>=10]
     if not points:return dict(audit,reason='no_current_contour')
-    points=np.unique(np.concatenate(points),axis=0)+offset
-    hubs=model._hubs();seeds=[]
-    for center,S in zip(hubs,model.shapes):
-        values,vectors=np.linalg.eigh(S)
-        seeds.append(np.r_[center,np.sqrt(values[::-1]),np.arctan2(vectors[1,1],vectors[0,1])])
-    distances=np.abs(np.array([_distance(points,s) for s in seeds]))
-    order=np.argsort(distances,axis=0);best=order[0]
-    margin=np.take_along_axis(distances,order[1:2],axis=0)[0]-distances.min(0)
-    occupied=set()
+    hubs=model._hubs();occupied=set()
     for r in qualified:
         d=np.linalg.norm(hubs-[r['cx'],r['cy']],axis=1);j=int(d.argmin())
         if d[j]<=max(4.,.15*r['major']):occupied.add(j)
+    # With all slots backed by independent current centres, this routine's
+    # loop would skip every slot and return exactly this same diagnostic.
+    # Avoid building/sorting rim pixels and four unused distance fields.
+    if len(occupied)==4:return dict(audit,reason='no_qualified_current_normal_constraints')
+    points=np.unique(np.concatenate(points),axis=0)+offset
+    seeds=[]
+    for center,S in zip(hubs,model.shapes):
+        values,vectors=np.linalg.eigh(S)
+        seeds.append(np.concatenate((center,np.sqrt(values[::-1]),[np.arctan2(vectors[1,1],vectors[0,1])])))
+    distances=np.abs(np.array([_distance(points,s) for s in seeds]))
+    order=np.argsort(distances,axis=0);best=order[0]
+    margin=np.take_along_axis(distances,order[1:2],axis=0)[0]-distances.min(0)
     # Filled CURRENT contours are area evidence, not projected template pixels.
     area=np.zeros_like(raw_mask);cv2.drawContours(area,contours,-1,255,cv2.FILLED)
-    D=np.c_[np.ones(4),model.template];rows=[];residuals=[];variances=[];details=[]
+    D=model.design if hasattr(model,'design') else np.column_stack((np.ones(4),model.template));rows=[];residuals=[];variances=[];details=[]
     for j,seed in enumerate(seeds):
         if j in occupied:continue
         chosen=points[(best==j)&(distances[j]<=2.5)&(margin>=.7)]

@@ -30,7 +30,7 @@ def recover(model,t,body,raw_mask,offset,rotors,full_only=False,area_mask=None,c
     for center,S in zip(hubs,model.shapes):
         values,vectors=np.linalg.eigh(S);major,minor=2*np.sqrt(np.maximum(values[::-1],1e-9))
         angle=np.arctan2(vectors[1,1],vectors[0,1])%np.pi
-        seeds.append(np.r_[center,major/2,minor/2,angle])
+        seeds.append(np.concatenate((center,[major/2,minor/2,angle])))
     # Preserve only independently qualified current candidates in seed slots.
     slots={}
     def compatible(p,s):

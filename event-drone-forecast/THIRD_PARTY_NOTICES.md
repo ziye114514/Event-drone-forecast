@@ -26,6 +26,8 @@
   SDK、密钥、安装器、二进制均未打包。本仓库不授予SDK部署/分发权利。
 * **NumPy、SciPy、OpenCV、PyTorch、Torchvision、ONNX、ONNX Runtime、Pillow、Matplotlib**：
   分别由其各自许可证覆盖，依赖安装时应保留相应通知；本ZIP不附带这些库或CUDA运行时。
+* **Numba、llvmlite、pybind11、MSVC**：可选JIT/本地SDK适配构建依赖，不随源码包分发。
+  自有AVX2包装仅引用用户已经安装的SDK头文件，不包含或修改厂商头文件；本地生成二进制不得当作本包已授权的通用分发资产。
 
 根AGPL文本从本机已安装Ultralytics发行包的原始GNU许可文本逐字复制，来源与SHA写入构建记录；
 该许可文本的版权归Free Software Foundation，保留其完整内容。

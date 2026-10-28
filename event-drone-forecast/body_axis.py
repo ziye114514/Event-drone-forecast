@@ -17,7 +17,7 @@ def principal(points,weights=None):
     angle=float(np.arctan2(u[1],u[0])%np.pi)
     return dict(center=center,angle=angle,ratio=float(np.sqrt(max(values[0],0)/max(values[1],1e-9))))
 
-def body_measurement(density,bbox):
+def body_measurement(density,bbox,skip_unqualified_lines=False):
     h,w=density.shape;b=np.array(bbox,float)
     lo=np.maximum(np.floor(b[:2]).astype(int),0);hi=np.minimum(np.ceil(b[2:]).astype(int),[w-1,h-1])
     if np.any(hi-lo<12):return dict(valid=False,reason='small_roi')
@@ -26,7 +26,7 @@ def body_measurement(density,bbox):
     for threshold in PARAMS['density_thresholds']:
         yy,xx=np.nonzero(crop>=threshold)
         if len(xx)<PARAMS['min_support']:continue
-        points=np.c_[xx,yy].astype(float)
+        points=np.column_stack((xx,yy)).astype(float)
         if len(points)>5000:points=points[::int(np.ceil(len(points)/5000))]
         m=principal(points);measurements.append(m);pointsets.append(points)
     if len(measurements)<2:return dict(valid=False,reason='insufficient_multiscale_support')
@@ -34,6 +34,19 @@ def body_measurement(density,bbox):
     points=pointsets[0];p=points+lo
     low=np.quantile(p,.015,axis=0);high=np.quantile(p,.985,axis=0);extent=float(max(high-low))
     if extent<PARAMS['min_extent_px']:return dict(valid=False,reason='small_extent')
+    if skip_unqualified_lines and (base['ratio']>=PARAMS['side_ratio_max'] or spread>PARAMS['multiscale_max_deg']):
+        # LSD agreement can only add a rejection; it cannot rescue a failed
+        # thickness/multiscale gate. Keep the original path as the control.
+        # Report the omitted diagnostic as unknown rather than zero lines.
+        axis=np.array([-np.sin(angle),np.cos(angle)])
+        confidence=float(np.clip((1-base['ratio'])*np.exp(-spread/15)*min(1,len(points)/250),0,1))
+        return dict(valid=False,reason='thick_or_inconsistent',center=((low+high)/2).tolist(),
+            bbox=np.concatenate((low,high)).tolist(),angle_rad=angle,normal_axis_xy=axis.tolist(),
+            ratio=base['ratio'],multiscale_spread_deg=spread,line_count=None,line_pca_disagreement_deg=None,
+            confidence=confidence,event_support=len(points),extent_px=extent,
+            camera_model='Weak/orthographic image-axis approximation; no calibrated 3D normal.',
+            sign_observed=False,thrust_magnitude_observed=False,
+            line_diagnostic_skipped_after_failed_necessary_shape_gate=True)
     # OpenCV LSD is an actual line detector. Lines are image support, not the
     # four virtual spokes of the disk model.
     gray=np.uint8(np.clip(np.log1p(crop)/4,0,1)*255)

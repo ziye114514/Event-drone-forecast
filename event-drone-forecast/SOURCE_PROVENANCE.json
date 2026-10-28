@@ -1,5 +1,5 @@
 {
-  "version": "0.4.0-alpha.1",
+  "version": "0.4.0-alpha.2",
   "scope": "Curated current source; no downloaded author repository",
   "license_text_source": "GNU AGPLv3 full text from installed ultralytics8.4.110 distribution licenses/LICENSE",
   "license_text_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
@@ -10,7 +10,25 @@
     {
       "destination": "fast_raw_reader.py",
       "original": "fast_raw_reader.py",
-      "original_sha256": "4b2bf2f8391e60bb92d4fe98f8202bfbb55d7010922cd4d8d3779401f346691c",
+      "original_sha256": "8d863ff0fd2541ea8dbd1fa1976587346da58d1db58a71a5fb005897d75062cc",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "period_process.py",
+      "original": "period_process.py",
+      "original_sha256": "ab37075abe0f6461059db6d16985e416de4b932a4748c6982091449cdebee9a3",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "sdk_activity_backend.py",
+      "original": "sdk_activity_backend.py",
+      "original_sha256": "fda96201b6b3aed6b9f38ec981d8c82f5e21b689746e227dba3adde986a6be53",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "native/sdk_activity_avx2.cpp",
+      "original": "native/sdk_activity_avx2.cpp",
+      "original_sha256": "c6dec2262f27fe65e883be93e2317812d7e0d00956d22db6f7a13e9d6ea39fee",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
@@ -22,37 +40,121 @@
     {
       "destination": "fast_structure_front.py",
       "original": "fast_structure_front.py",
-      "original_sha256": "e3dadd81d400b3ae8cbbb56502537c889a868c05661f202021c0d1f68c572aa9",
+      "original_sha256": "dcfe19c3b750a9d2eaca32da9975133d7f800c949a5e4ef56fe38af13821477f",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "fast_geometry_compute.py",
+      "original": "fast_geometry_compute.py",
+      "original_sha256": "946e6037f39b557a2bc43c0ff3c8d95f3ff54b78abd9d9c17d0d0ef525798c83",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "native_counts_numba.py",
+      "original": "native_counts_numba.py",
+      "original_sha256": "9c53e13244e37b789e8a7fbab1cbaf8ea6c16d5f8df269770245fefec69fdaa1",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "native_geometry_numba.py",
+      "original": "native_geometry_numba.py",
+      "original_sha256": "de9e38003579b90a0f0fca60308fa5e8bc1e04cddc4eea82e384bb99c5d7e8a6",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "native_latest_frequency.py",
+      "original": "native_latest_frequency.py",
+      "original_sha256": "714fdce45efda786e87137ca9151c0f0c8c51b23ff95d8905fba537e1921b9b9",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "requirements-counts.txt",
+      "original": "requirements-counts.txt",
+      "original_sha256": "0d08fffcdcc3a217a2f29edb492ed3481cd90511b87c059a7ca1d48e4ad79f4c",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "shared_image_motion.py",
+      "original": "shared_image_motion.py",
+      "original_sha256": "24a1344fd8dcbd4ce6cd66dd04a624a6a6bf210855053ed8dc129c81f8fb9cbe",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "flow_force_balance.py",
+      "original": "flow_force_balance.py",
+      "original_sha256": "dd8757f28d2f9c369c48075127439e1bcbe3678fe900f6c4400414577db23aba",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "projected_unknown_force.py",
+      "original": "projected_unknown_force.py",
+      "original_sha256": "607762d9fcc7f608c57e5196fb2948da6eb42a30554051f9722fe1aaee0200dd",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "axis_amplitude_bridge.py",
+      "original": "axis_amplitude_bridge.py",
+      "original_sha256": "f0496662471507fa36fcc8a99aeb35a7ba4a267909ada8a08015f4c35c9faf56",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_local_flow.py",
+      "original": "live_local_flow.py",
+      "original_sha256": "1c7ad08d86163aef2baa88ea97afd25d824c607a0ec23460a9f684013f38551a",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "live_flow_acceleration.py",
+      "original": "live_flow_acceleration.py",
+      "original_sha256": "81069432d0143647645fb4227507f8c2ca6f6aeb4472936f7218d63004784ddf",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "native_render.py",
+      "original": "native_render.py",
+      "original_sha256": "52592fa1210bd106791b854fc9618399f5a58a356db7a10616d83b618c88706d",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "responsive_force.py",
+      "original": "responsive_force.py",
+      "original_sha256": "475564d4d5055e900e93acf65971d72d85911d9f8f694f950e36d0a19d84e03f",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
       "destination": "continuous_five_circle.py",
       "original": "continuous_five_circle.py",
-      "original_sha256": "64995b5832dea7fe11beaa5632b04499456057c43c61d0d944d134d9a7246750",
+      "original_sha256": "5fcf8f520efcd693f708e83e1d8a105b399d98843789b6ccf70b51d962576242",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
       "destination": "five_circle_model.py",
       "original": "five_circle_model.py",
-      "original_sha256": "7b90c05f7ef4bf4108fab252ca8423e3b901d023c6f42e3160f1286577601605",
+      "original_sha256": "da17ba6c72f2845e5a6e547a582df79a6beaac93259c94e70c8961a3ae440d40",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
       "destination": "shared_arc_recovery.py",
       "original": "shared_arc_recovery.py",
-      "original_sha256": "2ba29b93a56465fa7c6cc491b73b2db6c548708fa2af6385c670d3b29964f8ce",
+      "original_sha256": "e3365b67fcde1e489c5f48425f810d436729c3ee80d5f30a52734863188e9792",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
       "destination": "partial_arc_information.py",
       "original": "partial_arc_information.py",
-      "original_sha256": "c0512456c18d368b7f2c6f1011ea84095405da89892fed2327b04cd47da168fd",
+      "original_sha256": "d897e800c3412edc5949a84b895c1803be9cdbdfb9fbecf11af083d56f801255",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
       "destination": "fast_force_response.py",
       "original": "fast_force_response.py",
-      "original_sha256": "d37242c867318117fa06ced6a686900940ea8ef433ea4370c3e8b0b9edd88d69",
+      "original_sha256": "3d009cace2517a47a874525052874cb4013e128297bbc8b1f95eb9e3dd881af4",
+      "mode": "copy_or_path_interface_adaptation"
+    },
+    {
+      "destination": "visibility_period.py",
+      "original": "visibility_period.py",
+      "original_sha256": "a40b32ffc1474b0407f26d30b91a0f328131330f3d6ade1ec140c6c90c2ca1c3",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
@@ -64,7 +166,7 @@
     {
       "destination": "live_decode.py",
       "original": "live_decode.py",
-      "original_sha256": "fa4a410d10daaa3797f4c67d84d4a56517d21f428ecae2854113c3bfe51c3e60",
+      "original_sha256": "45c54db6e53dd192989ff5ca660440f8ae8ff025631d637374d86c92ce9b6147",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
@@ -106,7 +208,7 @@
     {
       "destination": "live_worker.py",
       "original": "live_worker.py",
-      "original_sha256": "7cb8a5fe14c711cd506e0c5ed57b6e32578f73e72a070de1f3b0144251151225",
+      "original_sha256": "c3d0e5025777e465db6dc6d9dd66390e98aa11df682bb797c688c5cb6becf885",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
@@ -130,7 +232,7 @@
     {
       "destination": "run_fast_structure.py",
       "original": "run_fast_structure.py",
-      "original_sha256": "a6c970e9b8a8c28c9fac2d2bceb4ebdb6b56a3c0b46ac0837edb7f8e6c155969",
+      "original_sha256": "82a2f3de4c053141988c71e7ba1cb28ebe276b9bd47c5a4e30525ad3082bb01a",
       "mode": "copy_or_path_interface_adaptation"
     },
     {
@@ -338,7 +440,7 @@
     {
       "destination": "body_axis.py",
       "original": "research/stage6/silhouette.py",
-      "original_sha256": "18d92c6a102b2bd4a4f6329a1031ed5b1862e5b400ed611ccb6617878f089d88",
+      "original_sha256": "90e448a2afead7fbe86f1e78ac6a8a3ba6a9990583451b556099b45ae11a1f07",
       "mode": "AST_verified_definition_extraction",
       "definitions": [
         {
@@ -355,7 +457,7 @@
         },
         {
           "name": "body_measurement",
-          "ast_sha256": "c2de4cade22acef951cb2c48d104dd0fa08b488d08bd54fa1ad4f70be79c7137"
+          "ast_sha256": "2e401cd096f89a2f2775bb258d26df4b4be4b20806593adaa940bd8dfed824fb"
         }
       ]
     },

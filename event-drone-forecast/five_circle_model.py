@@ -43,7 +43,7 @@ def collinear_axis(rotors):
 def diagonal_center(points):
     p=np.asarray(points,float)
     order=np.argsort(np.arctan2(*(p-p.mean(0))[:,::-1].T))
-    a,b,c,d=np.c_[p[order],np.ones(4)]
+    a,b,c,d=np.column_stack((p[order],np.ones(4)))
     q=np.cross(np.cross(a,c),np.cross(b,d))
     if abs(q[2])<1e-9:return None
     return q[:2]/q[2]
@@ -94,7 +94,7 @@ class FiveCircleModel:
             axes=2*np.sqrt(np.maximum(np.linalg.eigvalsh(transformed[i]),1e-9))
             ratios.extend(np.array([r['minor'],r['major']])/axes)
         if min(ratios)<.65 or max(ratios)>1.5:return None
-        hubs=np.c_[expected,np.ones(4)]@A.T
+        hubs=np.column_stack((expected,np.ones(4)))@A.T
         for r,i in zip(ellipse_tensors(rotors),ids):transformed[i]=r
         return hubs,transformed,list(ids)
 
