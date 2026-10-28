@@ -5,6 +5,15 @@ ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'src')
 
 
 class Controls(unittest.TestCase):
+    def test_reanchor_and_unmeasured_amplitude(self):
+        from check_anchor_and_amplitude import main
+        with tempfile.TemporaryDirectory() as d:
+            main(Path(d)/'case')
+            r=json.loads((Path(d)/'case/summary.json').read_text())
+            self.assertTrue(r['position_unchanged'])
+            self.assertTrue(r['containment_does_not_override_weak_old_box_or_unbounded_box_growth'])
+            self.assertTrue(r['held_amplitude_does_not_refresh_expiry'])
+
     def test_partial_observability(self):
         from check_three_continuation import run
         with tempfile.TemporaryDirectory() as d:

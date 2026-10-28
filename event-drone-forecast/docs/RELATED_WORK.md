@@ -7,6 +7,7 @@
 | [Spetlik et al., CoHelix, arXiv:2610.31384](https://arxiv.org/abs/2610.31384) | 多桨共享投影几何和慢椭圆观察器的参照 | 不包含；本版主要用弱透视仿射状态，不等于其完整共享单应滤波器 |
 | [Chen et al., Count Every Rotation and Every Rotation Counts: Exploring Drone Dynamics via Propeller Sensing, arXiv:2511.13100](https://arxiv.org/abs/2511.13100) | EventPro周期与无人机动力学线索的参照 | 不包含 |
 | [effqpdet](https://github.com/radimspetlik/effqpdet) | 事件桨盘检测与属性提取思路 | 不包含 |
+| [Real-Time Drone Detection in Event Cameras via Per-Pixel Frequency Analysis, arXiv:2603.08386](https://arxiv.org/abs/2603.08386) | 每像素周期/谐波筛选与检测前端参照 | 不包含论文作者代码；当前固定像素周期实现不声称逐项复现该文 |
 | [Comport et al., Real-time markerless tracking for augmented reality: the virtual visual servoing framework](https://pubmed.ncbi.nlm.nih.gov/16805268/) / [ViSP](https://github.com/lagadic/visp) | 轮廓法线距离和鲁棒模型跟踪参照 | 不复制或调用ViSP代码 |
 | [FilterPy](https://github.com/rlabbe/filterpy) | 实际执行的固定线性滤波/过程噪声原函数 | 包含MIT快照，见第三方通知 |
 | [Ultralytics](https://github.com/ultralytics/ultralytics) | 实际检测预处理/NMS、可选训练导出依赖 | 由用户独立安装，遵循其AGPL/商业许可 |

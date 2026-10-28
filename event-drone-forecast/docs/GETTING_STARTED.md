@@ -68,7 +68,36 @@ python forecast.py predict --config configs/local.json --raw data/event.raw --ou
 当前只接受与原型匹配的1280×720原生事件。相机标定、其他分辨率、任意ONNX布局、多目标、
 实际相机驱动、未知相机运动都需要适配，不能只改文件名后默认支持。
 
-## 5. 获取训练图像和自有模型
+## 5. 新候选与可选本地提速
+新候选配置与完整流程见 [CURRENT_PIPELINE.md](CURRENT_PIPELINE.md)。默认基线不覆盖。
+
+```text
+python -m pip install -r requirements-counts.txt
+python forecast.py predict --config configs/local.json --raw data/event.raw --output outputs/candidate_01 --profile candidate
+```
+
+请在兼容SDK环境或隔离目录安装可选Numba0.64/llvmlite0.46；需要Python3.10–3.14与NumPy2.0–2.4范围，
+本仓库基础环境要求Python至少3.11。不要为可选提速破坏SDK既有依赖。隔离安装目录可用EDF_NUMBA_PATH指定。
+
+可选SDK AVX2需64位Windows/MSVC、与SDK环境相同的Python ABI、pybind11头文件和合法已安装SDK。
+使用同一SDK Python构建自己的适配器，不分发厂商源码：
+
+```text
+python tools/build_sdk_activity.py --sdk-root <installed-sdk-root> --pybind-include <existing-pybind11-include> --output .cache/sdk_activity_avx2
+```
+
+PowerShell中设置加载路径后，才向predict添加--sdk-avx2：
+
+```powershell
+$env:EDF_SDK_ACTIVITY_PATH=(Resolve-Path .cache/sdk_activity_avx2).Path
+```
+
+构建默认输出就在仓库.cache；显式设置环境变量让加载位置清楚。包中不提供该二进制。
+未编译仍可运行普通SDK路径，不能沿用AVX2的性能数字。
+候选默认仍做调试帧哈希，测速时可加--no-frame-verification，核验与计时分开。
+timings.jsonl在定时流结束后写出，包含完整输出成本；视频为可选，会增加负载。
+
+## 6. 获取训练图像和自有模型
 
 在SDK环境导出原生ON/OFF图，再做真实人工框标注：
 
